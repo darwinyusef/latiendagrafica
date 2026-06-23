@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nueva cotización</title>
+</head>
+<body style="margin:0;padding:0;background:#F0F4FF;font-family:'Segoe UI',Arial,Helvetica,sans-serif">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0F4FF;padding:40px 0">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(30,64,175,.12)">
+
+          <!-- ── HEADER ────────────────────────────────── -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0D2472 0%,#1E40AF 60%,#0a1f60 100%);padding:32px 48px">
+              <p style="margin:0 0 4px;font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)">Panel interno · {{ business_name }}</p>
+              <h1 style="margin:0;font-size:22px;font-weight:800;color:#ffffff">🖨️ Nueva Solicitud de Cotización</h1>
+              <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,.65)">Recibida el {{ fecha }}</p>
+            </td>
+          </tr>
+
+          <!-- ── ALERTA URGENCIA ─────────────────────────── -->
+          <tr>
+            <td style="background:#FFFBEB;border-left:4px solid #F59E0B;padding:16px 48px">
+              <p style="margin:0;font-size:13.5px;color:#92400E;font-weight:600">
+                ⏰ Responde en menos de 24 horas para ofrecer la mejor experiencia al cliente.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ── DATOS DEL CLIENTE ───────────────────────── -->
+          <tr>
+            <td style="padding:36px 48px 0">
+              <p style="margin:0 0 16px;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#1E40AF">Datos del cliente</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1.5px solid #E5E7EB;border-radius:12px;overflow:hidden">
+
+                {% set client_rows = [
+                  ('Nombre',    nombre,   '👤'),
+                  ('Empresa',   empresa,  '🏢'),
+                  ('Email',     email,    '📧'),
+                  ('Teléfono',  telefono, '📱'),
+                ] %}
+                {% for label, value, icon in client_rows %}
+                {% if value %}
+                <tr style="border-bottom:1px solid #F3F4F6">
+                  <td width="180" style="padding:14px 20px;background:#F8FAFF;font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.4px">
+                    {{ icon }} &nbsp;{{ label }}
+                  </td>
+                  <td style="padding:14px 20px;font-size:14px;color:#0f172a;font-weight:500">
+                    {% if label == 'Email' %}
+                      <a href="mailto:{{ value }}" style="color:#1E40AF;text-decoration:none">{{ value }}</a>
+                    {% elif label == 'Teléfono' %}
+                      <a href="https://wa.me/{{ value | replace('+','') | replace(' ','') }}" style="color:#25D366;text-decoration:none">{{ value }}</a>
+                    {% else %}
+                      {{ value }}
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── DETALLES DEL PEDIDO ─────────────────────── -->
+          <tr>
+            <td style="padding:28px 48px 0">
+              <p style="margin:0 0 16px;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#1E40AF">Detalles del pedido</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1.5px solid #E5E7EB;border-radius:12px;overflow:hidden">
+
+                {% set order_rows = [
+                  ('Servicio',  servicio,  '🎯'),
+                  ('Cantidad',  cantidad,  '📦'),
+                ] %}
+                {% for label, value, icon in order_rows %}
+                {% if value %}
+                <tr style="border-bottom:1px solid #F3F4F6">
+                  <td width="180" style="padding:14px 20px;background:#F8FAFF;font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.4px">
+                    {{ icon }} &nbsp;{{ label }}
+                  </td>
+                  <td style="padding:14px 20px;font-size:14px;color:#0f172a;font-weight:500">{{ value }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                {% if descripcion %}
+                <tr>
+                  <td width="180" style="padding:14px 20px;background:#F8FAFF;font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.4px;vertical-align:top">
+                    📝 &nbsp;Descripción
+                  </td>
+                  <td style="padding:14px 20px;font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap">{{ descripcion }}</td>
+                </tr>
+                {% endif %}
+
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── ACCIONES RÁPIDAS ────────────────────────── -->
+          <tr>
+            <td style="padding:32px 48px 40px">
+              <p style="margin:0 0 18px;font-size:13px;font-weight:600;color:#374151">Responder ahora:</p>
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding-right:12px">
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background:#1E40AF;border-radius:999px">
+                          <a href="mailto:{{ email }}?subject=Re: Tu cotización en {{ business_name }}"
+                             style="display:inline-block;padding:12px 24px;color:#fff;text-decoration:none;font-size:13px;font-weight:700">
+                            ✉️ Responder por Email
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  {% if telefono %}
+                  <td>
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background:#25D366;border-radius:999px">
+                          <a href="https://wa.me/{{ telefono | replace('+','') | replace(' ','') }}"
+                             style="display:inline-block;padding:12px 24px;color:#fff;text-decoration:none;font-size:13px;font-weight:700">
+                            💬 WhatsApp
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  {% endif %}
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── SEPARADOR ──────────────────────────────── -->
+          <tr><td style="height:1px;background:#E5E7EB"></td></tr>
+
+          <!-- ── FOOTER ─────────────────────────────────── -->
+          <tr>
+            <td style="background:#F8FAFF;padding:20px 48px;text-align:center">
+              <p style="margin:0;font-size:11.5px;color:#9CA3AF">
+                Correo interno — {{ business_name }} · {{ fecha }}
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

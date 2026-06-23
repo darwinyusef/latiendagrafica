@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Recibimos tu cotización</title>
+</head>
+<body style="margin:0;padding:0;background:#F0F4FF;font-family:'Segoe UI',Arial,Helvetica,sans-serif">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0F4FF;padding:40px 0">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(30,64,175,.12)">
+
+          <!-- ── HEADER ────────────────────────────────── -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0D2472 0%,#1E40AF 60%,#0a1f60 100%);padding:40px 48px;text-align:center">
+              <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)">Taller Creativo · Sabaneta, Colombia</p>
+              <h1 style="margin:0;font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">La Tienda Gráfica</h1>
+              <div style="width:48px;height:3px;background:rgba(255,255,255,.4);border-radius:2px;margin:14px auto 0"></div>
+            </td>
+          </tr>
+
+          <!-- ── CUERPO ─────────────────────────────────── -->
+          <tr>
+            <td style="padding:44px 48px 36px">
+
+              <!-- Saludo -->
+              <h2 style="margin:0 0 14px;font-size:22px;font-weight:700;color:#0f172a;letter-spacing:-0.3px">¡Hola, {{ nombre }}! 🎉</h2>
+              <p style="margin:0 0 28px;font-size:15px;color:#4B5563;line-height:1.75">
+                Recibimos tu solicitud de cotización y ya está en manos de nuestro equipo.
+                Te responderemos con una propuesta detallada en <strong style="color:#1E40AF">menos de 24 horas</strong>.
+              </p>
+
+              <!-- Resumen -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#F8FAFF;border:1.5px solid #DBEAFE;border-radius:12px;margin-bottom:32px">
+                <tr>
+                  <td style="padding:24px 28px">
+                    <p style="margin:0 0 18px;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#1E40AF">Resumen de tu solicitud</p>
+
+                    {% set rows = [
+                      ('Servicio', servicio, '🎯'),
+                      ('Cantidad', cantidad, '📦'),
+                      ('Empresa', empresa, '🏢'),
+                      ('Teléfono', telefono, '📱'),
+                    ] %}
+                    {% for label, value, icon in rows %}
+                    {% if value %}
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px">
+                      <tr>
+                        <td width="24" style="font-size:15px;vertical-align:top;padding-top:1px">{{ icon }}</td>
+                        <td width="120" style="font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.4px;vertical-align:top;padding-top:2px">{{ label }}</td>
+                        <td style="font-size:14px;color:#0f172a;font-weight:500">{{ value }}</td>
+                      </tr>
+                    </table>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if descripcion %}
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;border-top:1px solid #DBEAFE;padding-top:14px">
+                      <tr>
+                        <td width="24" style="font-size:15px;vertical-align:top;padding-top:1px">📝</td>
+                        <td width="120" style="font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.4px;vertical-align:top;padding-top:2px">Descripción</td>
+                        <td style="font-size:13.5px;color:#374151;line-height:1.65">{{ descripcion }}</td>
+                      </tr>
+                    </table>
+                    {% endif %}
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA WhatsApp -->
+              <p style="margin:0 0 20px;font-size:14px;color:#6B7280;line-height:1.7">
+                ¿Tienes alguna duda o quieres acelerar el proceso? Escríbenos directamente por WhatsApp.
+              </p>
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background:#25D366;border-radius:999px">
+                    <a href="https://wa.me/{{ wa_number }}" target="_blank"
+                       style="display:inline-block;padding:13px 30px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;letter-spacing:.2px">
+                      💬 &nbsp;Chatear por WhatsApp
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ── SEPARADOR ──────────────────────────────── -->
+          <tr><td style="height:1px;background:#E5E7EB"></td></tr>
+
+          <!-- ── FOOTER ─────────────────────────────────── -->
+          <tr>
+            <td style="background:#F8FAFF;padding:24px 48px;text-align:center">
+              <p style="margin:0 0 8px;font-size:12px;color:#9CA3AF">
+                <a href="{{ site_url }}" style="color:#1E40AF;text-decoration:none;font-weight:600">{{ site_url }}</a>
+              </p>
+              <p style="margin:0;font-size:11.5px;color:#9CA3AF">
+                © {{ fecha[:4] }} {{ business_name }} · Sabaneta, Antioquia, Colombia
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

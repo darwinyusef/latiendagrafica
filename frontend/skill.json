@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "frontend-files": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/frontend"
+      ]
+    }
+  }
+}
