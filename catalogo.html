@@ -75,6 +75,14 @@ a{text-decoration:none;color:inherit}
 .pcard-desc{font-size:12.5px;color:#6B7280;line-height:1.6;flex:1}
 .pcard-btn{margin-top:12px;display:block;width:100%;padding:11px;background:#1E40AF;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;text-align:center;}
 .pcard-btn:hover{background:#0D2472}
+.pcard-ficha-btn{margin-top:8px;display:block;width:100%;padding:10px;background:#fff;color:#1E40AF;border:1.5px solid #1E40AF;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s,color .2s;text-align:center;}
+.pcard-ficha-btn:hover{background:#1E40AF;color:#fff}
+.ficha-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.78);z-index:999;align-items:center;justify-content:center;padding:24px}
+.ficha-modal.on{display:flex}
+.ficha-modal-inner{position:relative;max-width:560px;width:100%;max-height:90vh;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.ficha-modal-inner img{display:block;width:100%;max-height:90vh;object-fit:contain;background:#fff}
+.ficha-modal-close{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:#fff;border:none;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);color:#1E293B}
+.ficha-modal-close:hover{background:#F1F5F9}
 
 /* EMPTY */
 .empty{grid-column:1/-1;text-align:center;padding:64px 20px;color:#9CA3AF}
@@ -166,6 +174,7 @@ footer{background:#07101f;padding:36px 0;text-align:center}
       <button class="f-btn" data-f="tarjetas">Tarjetas</button>
       <button class="f-btn" data-f="banners">Banners</button>
       <button class="f-btn" data-f="textil">Textil</button>
+      <button class="f-btn" data-f="senalizacion">Señalización</button>
       <button class="f-btn" data-f="otros">Otros</button>
       <select class="f-select" id="f-select">
         <option value="todos">Todos los productos</option>
@@ -173,11 +182,20 @@ footer{background:#07101f;padding:36px 0;text-align:center}
         <option value="tarjetas">Tarjetas</option>
         <option value="banners">Banners</option>
         <option value="textil">Textil</option>
+        <option value="senalizacion">Señalización</option>
         <option value="otros">Otros</option>
       </select>
       <span class="catalog-count" id="count"></span>
     </div>
     <div class="pgrid" id="grid"></div>
+  </div>
+</div>
+
+<!-- MODAL FICHA TÉCNICA -->
+<div class="ficha-modal" id="fichaModal">
+  <div class="ficha-modal-inner">
+    <button class="ficha-modal-close" id="fichaModalClose" aria-label="Cerrar">✕</button>
+    <img id="fichaModalImg" src="" alt="Ficha técnica">
   </div>
 </div>
 
@@ -211,6 +229,9 @@ function render(f) {
         var thumb = p.imagen
           ? '<img src="' + p.imagen + '" alt="' + p.nombre + '" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:inherit">'
           : '<span>' + p.icono + '</span>';
+        var fichaBtn = p.ficha
+          ? '<button class="pcard-ficha-btn" data-ficha="' + p.ficha + '" data-nombre="' + p.nombre + '">Ver ficha técnica</button>'
+          : '';
         return '<div class="pcard">'
           + '<div class="pcard-img" style="background:linear-gradient(135deg,' + p.gradiente + ');position:relative">'
           + thumb
@@ -221,6 +242,7 @@ function render(f) {
           + '<p class="pcard-price">' + p.precio + '</p>'
           + '<p class="pcard-desc">' + p.descripcion + '</p>'
           + '<a href="cotizacion.html?producto=' + encodeURIComponent(p.nombre) + '" class="pcard-btn">Cotizar ahora →</a>'
+          + fichaBtn
           + '</div></div>';
       }).join('');
     }
@@ -244,6 +266,29 @@ var fSel = document.getElementById('f-select');
 if (fSel) {
   fSel.addEventListener('change', function () { applyFilter(fSel.value); });
 }
+
+// Modal de ficha técnica
+var fichaModal = document.getElementById('fichaModal');
+var fichaModalImg = document.getElementById('fichaModalImg');
+var fichaModalClose = document.getElementById('fichaModalClose');
+
+function openFicha(src, nombre) {
+  fichaModalImg.src = src;
+  fichaModalImg.alt = 'Ficha técnica — ' + nombre;
+  fichaModal.classList.add('on');
+}
+function closeFicha() {
+  fichaModal.classList.remove('on');
+  fichaModalImg.src = '';
+}
+
+document.getElementById('grid').addEventListener('click', function (e) {
+  var btn = e.target.closest('.pcard-ficha-btn');
+  if (btn) openFicha(btn.dataset.ficha, btn.dataset.nombre);
+});
+fichaModalClose.addEventListener('click', closeFicha);
+fichaModal.addEventListener('click', function (e) { if (e.target === fichaModal) closeFicha(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFicha(); });
 
 fetch(host + '/api/catalogo')
   .then(function (r) { return r.json(); })
